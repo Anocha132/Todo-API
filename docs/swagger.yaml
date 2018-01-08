@@ -3,7 +3,7 @@ info:
   description: "Todo api"
   version: "1.0.0"
   title: "Todo list"
-host: "lab-1.localhost"
+host: "todo-api.test"
 basePath: "/v1"
 tags:
 - name: "todos"
