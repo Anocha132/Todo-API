@@ -1,0 +1,158 @@
+swagger: "2.0"
+info:
+  description: "Todo api"
+  version: "1.0.0"
+  title: "Todo list"
+host: "lab-1.localhost"
+basePath: "/v1"
+tags:
+- name: "todos"
+  description: "Everything about todo lists"
+schemes:
+- "http"
+paths:
+  /todos:
+    get:
+      tags:
+        - "todos"
+      summary: "Get todo lists"
+      description: "Get todo lists on each page"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page"
+          in: query
+          description: "Page of lists"
+          required: false
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successfull operation"
+          schema:
+            $ref: "#/definitions/TodoList"
+    post:
+      tags:
+        - "todos"
+      summary: "Add todo items"
+      consumes:
+        - "application/x-www-form-urlencoded"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "formData"
+          name: "name"
+          description: "Todo item"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: "successfull operation"
+  /todos/{todoId}:
+    patch:
+      tags:
+        - "todos"
+      summary: "Update todo item"
+      consumes:
+        - "application/x-www-form-urlencoded"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "todoId"
+          description: "ID of todo"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "formData"
+          name: "name"
+          description: "Todo item"
+          required: true
+          type: "string"
+        - in: "formData"
+          name: "status"
+          description: "Todo status"
+          required: true
+          type: "boolean"
+      responses:
+        204:
+          description: "successfull operation"
+        404:
+          description: "Todo id is not exist"
+    delete:
+      tags:
+        - "todos"
+      summary: "Delete todo item"
+      consumes:
+        - "application/x-www-form-urlencoded"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "todoId"
+          description: "ID of todo"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        204:
+          description: "successfull operation"
+        404:
+          description: "Todo id is not exist"
+definitions:
+  TodoList:
+    type: "object"
+    properties:
+      total:
+        type: "integer"
+        format: "int64"
+        description: "Total page"
+      per_page:
+        type: "integer"
+        format: "int64"
+        description: "Item per page"
+      current_page:
+        type: "integer"
+        format: "int64"
+        description: "Current page"
+      last_page:
+        type: "integer"
+        format: "int64"
+        description: "Last page"
+      first_page_url:
+        type: "string"
+      last_page_url:
+        type: "string"
+      next_page_url:
+        type: "string"
+      prev_page_url:
+        type: "string"
+      path:
+        type: "string"
+        description: "Path without page parameter"
+      from:
+        type: "integer"
+        format: "int64"
+        description: "Start data item"
+      to:
+        type: "integer"
+        format: "int64"
+        description: "Last data item"
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              format: "int64"
+            name:
+              type: "string"
+            status:
+              type: "boolean"
+            created_at:
+              type: "string"
+              format: "date-time"
+            updated_at:
+              type: "string"
+              format: "date-time"
