@@ -51,6 +51,9 @@ $app->patch('/v1/todos/{id}', function($req, $res, $args) {
 	if(!isset($params['name']) && !isset($params['status'])) return $res->withStatus(403);
 
 	$todo = App\Models\Todo::find($id);
+
+	if (is_null($todo)) return $res->withStatus(404);
+
 	if(isset($params['name']))$todo->name = $params['name'];
 	if(isset($params['status']))$todo->status = $params['status'];
 	$todo->save();
@@ -59,8 +62,11 @@ $app->patch('/v1/todos/{id}', function($req, $res, $args) {
 });
 
 $app->delete('/v1/todos/{id}', function($req, $res, $args) {
+	$id = $args['id'];
 
-	$todo = App\Models\Todo::find(1);
+	$todo = App\Models\Todo::find($id);
+
+	if (is_null($todo)) return $res->withStatus(404);
 
 	$todo->delete();
 
