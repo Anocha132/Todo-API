@@ -1,0 +1,13 @@
+{
+    "name": "ohmz/todo-api",
+    "authors": [
+        {
+            "name": "Anocha",
+            "email": "lnw_oom@hotmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.9",
+        "illuminate/database": "^5.4"
+    }
+}
