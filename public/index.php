@@ -20,28 +20,25 @@ $capsule->setEventDispatcher(new Illuminate\Events\Dispatcher(new Illuminate\Con
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
+$todoService = new App\Services\TodoService;
+
 $app = new Slim\App();
 
-$app->get('/v1/todos', function($req, $res, $args) {
+$app->get('/v1/todos', function($req, $res, $args) use ($todoService) {
 
 	$page = (int) $req->getParam('page');
-	$todos = App\Models\Todo::orderBy('created_at', 'desc')->paginate(15, ['*'], 'page', $page);
-
-	$todos->setPath((string) $req->getUri()->withQuery(''));
+	$path = (string) $req->getUri()->withQuery('');
+	$todos = $todoService->get($page, $path);
 
 	return $res->withJson($todos);
 });
 
-$app->post('/v1/todos', function($req, $res, $args) {
+$app->post('/v1/todos', function($req, $res, $args) use ($todoService) {
 	$params = $req->getParams();
 
-	if(!isset($params['name'])) return $res->withStatus(403);
+	$saved = $todoService->save($params);
 
-	$todo = new App\Models\Todo;
-	$todo->name = $params['name'];
-	$todo->save();
-
-	return $res->withStatus(201);
+	return $saved ? $res->withStatus(201) : $res->withStatus(403);
 });
 
 $app->patch('/v1/todos/{id}', function($req, $res, $args) {

@@ -19,4 +19,22 @@ class TodoTest extends TestCase {
 		$this->assertArrayHasKey('data', $response);
 	}
 
+	public function testSave() {
+		$params = ['name' => 'todo 1'];
+
+		$TodoService = new TodoService;
+		$saved = $TodoService->save($params);
+
+		$this->assertTrue($saved);
+	}
+
+	public function testSaveWithoutName() {
+		$params = ['name' => ''];
+
+		$TodoService = new TodoService;
+		$saved = $TodoService->save($params);
+
+		$this->assertFalse($saved);
+	}
+
 }

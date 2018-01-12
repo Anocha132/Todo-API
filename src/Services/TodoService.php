@@ -16,4 +16,15 @@ class TodoService {
 		return $todos;
 	}
 
+	public function save(Array $params) {
+		$params = array_filter($params);
+		if(!isset($params['name'])) return false;
+
+		$todo = new Todo;
+		$todo->name = $params['name'];
+		$saved = $todo->save();
+
+		return $saved;
+	}
+
 }
