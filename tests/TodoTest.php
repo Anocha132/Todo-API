@@ -14,8 +14,6 @@ class TodoTest extends TestCase {
 		$this->assertArrayHasKey('per_page', $response);
 		$this->assertArrayHasKey('current_page', $response);
 		$this->assertArrayHasKey('last_page', $response);
-		$this->assertArrayHasKey('first_page_url', $response);
-		$this->assertArrayHasKey('last_page_url', $response);
 		$this->assertArrayHasKey('next_page_url', $response);
 		$this->assertArrayHasKey('prev_page_url', $response);
 		$this->assertArrayHasKey('data', $response);
