@@ -20,57 +20,16 @@ $capsule->setEventDispatcher(new Illuminate\Events\Dispatcher(new Illuminate\Con
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
+$todoService = new App\Services\TodoService;
+
 $app = new Slim\App();
 
-$app->get('/v1/todos', function($req, $res, $args) {
+$app->get('/v1/todos', App\Controllers\TodoController::class.':index');
 
-	$page = (int) $req->getParam('page');
-	$todos = App\Models\Todo::orderBy('created_at', 'desc')->paginate(15, ['*'], 'page', $page);
+$app->post('/v1/todos', App\Controllers\TodoController::class.'save' );
 
-	$todos->setPath((string) $req->getUri()->withQuery(''));
+$app->patch('/v1/todos/{id}', App\Controllers\TodoController::class.'update');
 
-	return $res->withJson($todos);
-});
-
-$app->post('/v1/todos', function($req, $res, $args) {
-	$params = $req->getParams();
-
-	if(!isset($params['name'])) return $res->withStatus(403);
-
-	$todo = new App\Models\Todo;
-	$todo->name = $params['name'];
-	$todo->save();
-
-	return $res->withStatus(201);
-});
-
-$app->patch('/v1/todos/{id}', function($req, $res, $args) {
-	$params = $req->getParams();
-	$id = $args['id'];
-
-	if(!isset($params['name']) && !isset($params['status'])) return $res->withStatus(403);
-
-	$todo = App\Models\Todo::find($id);
-
-	if (is_null($todo)) return $res->withStatus(404);
-
-	if(isset($params['name']))$todo->name = $params['name'];
-	if(isset($params['status']))$todo->status = $params['status'];
-	$todo->save();
-
-	return $res->withStatus(204);
-});
-
-$app->delete('/v1/todos/{id}', function($req, $res, $args) {
-	$id = $args['id'];
-
-	$todo = App\Models\Todo::find($id);
-
-	if (is_null($todo)) return $res->withStatus(404);
-
-	$todo->delete();
-
-	return $res->withStatus(204);
-});
+$app->delete('/v1/todos/{id}', App\Controllers\TodoController::class.'delete');
 
 $app->run();
