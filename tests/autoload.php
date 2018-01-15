@@ -3,10 +3,10 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 $settings = [
-    'driver' => 'mysql',
-    'host' => '127.0.0.1',
-    'database' => 'todo-api',
-    'username' => 'root',
+    'driver' => 'sqlite',
+    'host' => '',
+    'database' => ':memory:',
+    'username' => '',
     'password' => '',
     'collation' => 'utf8_general_ci',
     'prefix' => ''

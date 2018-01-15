@@ -27,4 +27,35 @@ class TodoService {
 		return $saved;
 	}
 
+	public function update($id, Array $params){
+
+		if(!isset($params['name']) && !isset($params['status'])) return false;
+
+		$todo = Todo::find($id);
+
+		if (is_null($todo)) {
+			return false;
+		}
+
+		if(isset($params['name'])) $todo->name = $params['name'];
+		if(isset($params['status'])) $todo->status = $params['status'];
+
+		$saved = $todo->save();
+
+		return $saved;
+
+	}
+
+	public function delete($id){
+		$todo = Todo::find($id);
+
+		if (is_null($todo)) {
+			return false;
+		}
+
+		$deleted = $todo->delete();
+
+		return $deleted;
+	}
+
 }
